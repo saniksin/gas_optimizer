@@ -48,9 +48,13 @@ describe("Comparing two contracts, optimized and non-optimized", function () {
       const { nonOptimizedBank } = await loadFixture(deployContractsFixture);
 
       await nonOptimizedBank.deposit({ value: ethers.parseEther("1") });
-      const gasUsed = await nonOptimizedBank.countUsersAndBalances();
+      const countUsersAndBalances = await nonOptimizedBank.countUsersAndBalances();
       
-      expect(gasUsed).not.to.be.undefined;
+      expect(countUsersAndBalances).to.be.an('array').that.is.not.empty;
+      expect(countUsersAndBalances).to.deep.equal([
+          1n,
+          1000000000000000000n
+      ]);
     });
 
     // countUsersAndBalancesCalldata
@@ -58,18 +62,26 @@ describe("Comparing two contracts, optimized and non-optimized", function () {
       const { nonOptimizedBank } = await loadFixture(deployContractsFixture);
 
       await nonOptimizedBank.deposit({ value: ethers.parseEther("1") });
-      const gasUsed = await nonOptimizedBank.countUsersAndBalancesCalldata(users);
+      const countUsersAndBalancesCalldata = await nonOptimizedBank.countUsersAndBalancesCalldata(users);
       
-      expect(gasUsed).not.to.be.undefined;
+      expect(countUsersAndBalancesCalldata).to.be.an('array').that.is.not.empty;
+      expect(countUsersAndBalancesCalldata).to.deep.equal([
+          2n,
+          0n
+      ]);
     });
 
     // calculate
     it("should measure gas usage for calculate", async function () {
       const { nonOptimizedBank } = await loadFixture(deployContractsFixture);
 
-      const gasUsed = await nonOptimizedBank.calculate(5, 3);
+      const calculate = await nonOptimizedBank.calculate(5, 3);
       
-      expect(gasUsed).not.to.be.undefined;
+      expect(calculate).to.be.an('array').that.is.not.empty;
+      expect(calculate).to.deep.equal([
+          8n,
+          2n
+      ]);
     });
     
     // все таски в одной задаче внутри контракта (deposit, withdraw, countUsersAndBalances, countUsersAndBalancesCalldata, calculate)
@@ -113,9 +125,13 @@ describe("Comparing two contracts, optimized and non-optimized", function () {
       const { optimizedBank } = await loadFixture(deployContractsFixture);
 
       await optimizedBank.deposit({ value: ethers.parseEther("1") });
-      const gasUsed = await optimizedBank.countUsersAndBalances();
+      const countUsersAndBalances = await optimizedBank.countUsersAndBalances();
       
-      expect(gasUsed).not.to.be.undefined;
+      expect(countUsersAndBalances).to.be.an('array').that.is.not.empty;
+      expect(countUsersAndBalances).to.deep.equal([
+          1n,
+          1000000000000000000n
+      ]);
     });
 
     // countUsersAndBalancesCalldata 
@@ -123,18 +139,26 @@ describe("Comparing two contracts, optimized and non-optimized", function () {
       const { optimizedBank } = await loadFixture(deployContractsFixture);
 
       await optimizedBank.deposit({ value: ethers.parseEther("1") });
-      const gasUsed = await optimizedBank.countUsersAndBalancesCalldata(users);
+      const countUsersAndBalancesCalldata = await optimizedBank.countUsersAndBalancesCalldata(users);
       
-      expect(gasUsed).not.to.be.undefined;
+      expect(countUsersAndBalancesCalldata).to.be.an('array').that.is.not.empty;
+      expect(countUsersAndBalancesCalldata).to.deep.equal([
+          2n,
+          0n
+      ]);
     });
 
     // calculate
     it("should measure gas usage for calculate", async function () {
       const { optimizedBank } = await loadFixture(deployContractsFixture);
 
-      const gasUsed = await optimizedBank.calculate(5, 3);
+      const calculate = await optimizedBank.calculate(5, 3);
       
-      expect(gasUsed).not.to.be.undefined;
+      expect(calculate).to.be.an('array').that.is.not.empty;
+      expect(calculate).to.deep.equal([
+          8n,
+          2n
+      ]);
     });
 
     // все таски в одной задаче внутри контракта (deposit, withdraw, countUsersAndBalances, countUsersAndBalancesCalldata, calculate)
